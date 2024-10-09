@@ -1,0 +1,15 @@
+{% extends 'layout/base.html' %}
+{% load static %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<h2>Welcome to My Blog</h2>
+<p>This is the home page where you'll find the latest blog posts.</p>
+
+<ul>
+    {% for post in posts %}
+        <li><a href="{% url 'blogpost_detail' post.pk %}">{{ post.title }}</a></li>
+    {% endfor %}
+</ul>
+{% endblock %}
