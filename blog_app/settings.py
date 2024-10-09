@@ -133,6 +133,10 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
+
 runserver.default_port = '8000'
 runserver.default_addr = APP_URL
 
