@@ -6,23 +6,28 @@
     <title>{% block title %}{% endblock %}</title>
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/style.css' %}" />
-    <style>
-
-    </style>
   </head>
   <body>
-    <header class="">
-      <nav>
+    <header class="header">
+      <a href="/" style="text-decoration: none; color: inherit;">
+        <p>Blog App</p>
+      </a>
+      <nav class="nav-options">
         <ul>
-            
+          {% if user.is_authenticated %}
+          <a href="{% url 'logout' %}" class="button-link">Login</a>
+          {% else %}
+          <a href="{% url 'login' %}" class="button-link">Login</a>
+          {% endif %}
+        </ul>
+        <ul>
+          {% if user.is_authenticated %}
+          
+          {% endif %}
         </ul>
       </nav>
     </header>
 
     <main>{% block content %} {% endblock %}</main>
-
-    <footer>
-      <p>&copy; {{ current_year }}</p>
-    </footer>
   </body>
 </html>

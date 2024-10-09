@@ -4,12 +4,43 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
-<h2>Welcome to My Blog</h2>
-<p>This is the home page where you'll find the latest blog posts.</p>
 
-<ul>
-    {% for post in posts %}
-        <li><a href="{% url 'blogpost_detail' post.pk %}">{{ post.title }}</a></li>
-    {% endfor %}
-</ul>
+    <h2>Browse latest blogs</h2>
+    
+    <div class="blog_grid">
+        <div class="blog_instance">
+            <a href><h4>Title</h4></a>
+            <small>October 12, 2024</small>
+            <small>Author: Humphrey Uno</small>
+            <p class="blog-content">
+                Nulla molestias ipsam culpa quaerat nihil nam eius veniam amet magni beatae, quidem quo blanditiis facilis illum nobis dolor expedita labore, fugit sed enim           
+            </p>
+        </div>
+        <div class="blog_instance">
+            <a href><h4>Title</h4></a>
+            <small>October 12, 2024</small>
+            <small>Author: Humphrey Uno</small>
+            <p class="blog-content">
+                Nulla molestias ipsam culpa quaerat nihil nam eius veniam amet magni beatae, quidem quo blanditiis facilis illum nobis dolor expedita labore, fugit sed enim           
+            </p>
+        </div>
+        <div class="blog_instance">
+            <a href><h4>Title</h4></a>
+            <small>October 12, 2024</small>
+            <small>Author: Humphrey Uno</small>
+            <p class="blog-content">
+                Nulla molestias ipsam culpa quaerat nihil nam eius veniam amet magni beatae, quidem quo blanditiis facilis illum nobis dolor expedita labore, fugit sed enim           
+            </p>
+        </div>
+        <div class="blog_instance">
+            <a href><h4>Title</h4></a>
+            <small>October 12, 2024</small>
+            <small>Author: Humphrey Uno</small>
+            <p class="blog-content">
+                Nulla molestias ipsam culpa quaerat nihil nam eius veniam amet magni beatae, quidem quo blanditiis facilis illum nobis dolor expedita labore, fugit sed enim           
+            </p>
+        </div>
+    </div>
+
+
 {% endblock %}
