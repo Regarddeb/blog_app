@@ -34,6 +34,7 @@ SECURE_CROSS_ORIGIN_OPENER_POLICY = None
 
 ALLOWED_HOSTS = []
 
+LOGIN_REDIRECT_URL = '/'
 
 # Application definition
 

@@ -1,0 +1,36 @@
+{% extends 'layout/base.html' %}
+{% load static %}
+
+{% block title %}Signup{% endblock %}
+
+{% block content %}
+<div class="container">
+    <form method="post">
+        {% csrf_token %}
+        
+        <div class='login-title'>
+            <h5>Welcome to Blog App!</h5>
+            <h3>Create an account</h3>
+        </div>
+
+        {% if form.errors %}
+            <ul>
+                {% for field in form %}
+                    {% for error in field.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        {% for field in form %}
+            <p class="form-group">
+                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                {{ field }}
+            </p>
+        {% endfor %}
+
+        <button type="submit" class='button-link w-full'>Signup</button>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends 'layout/base.html' %}
+{% load static %}
+
+{% block title %}My Blogs{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <div class='container' style='margin-top: -2rem; padding-bottom: 1rem;'>
+        <a href='#' onClick='window.history.back();'><i class="fas fa-arrow-left"></i> Back</a>
+    </div>
+    <form id="blogForm" style='width: 30rem;'>
+        <h3>Create Blog</h3>
+        <p>
+            <label for='id_title'>Title</label>
+            <input placeholder='Title of the blog' id='id_title' name='title' required />
+        </p>
+        <p>
+            <label for='id_content'>Content</label>
+            <textarea id='id_content' placeholder='Enter the content of your blog here' name='content' required></textarea>
+        </p>
+        <button type='submit' class='button-link' style='width: 100%; box-sizing: border-box; margin-top: 1rem;'>Publish Blog</button>
+    </form>      
+</div>
+<script>
+    $('#blogForm').on('submit', function(e) {
+        e.preventDefault();
+
+        const title = $('#id_title').val();
+        const content = $('#id_content').val();
+
+        $.ajax({
+            url: "{% url 'api/blog/create' %}",
+            type: 'POST',
+            data: {
+                title: title,
+                content: content,
+                csrfmiddlewaretoken: '{{ csrf_token }}'
+            },
+            success: function(response) {
+                $('#id_title').val('');
+                $('#id_content').val('');
+                alert('Blog published successfully!');
+            },
+            error: function(xhr) {
+                alert('Error: ' + xhr.responseText); 
+            }
+        });
+    });
+</script>
+{% endblock %}

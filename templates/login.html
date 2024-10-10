@@ -14,20 +14,17 @@
             <h5>Welcome to Blog App!</h5>
             <h3>Login to your account</h3>
         </div>
-        <di class="input_parent">
-            <label for="username">Username:</label>
-            <input type="text" id="username" name="username" placeholder='Enter your email' required>
-        </di>
-        <div class="input_parent" style="margin-bottom: 2rem;">
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" placeholder='Enter your password' required>
+        {{ form.as_p }}
+        <button type="submit" class='button-link w-full' style='margin-top: 1rem; margin-bottom: 1rem;'>Login</button>
+        <div class='w-full' style='text-align: center;'>
+            <a
+                style='font-size: small; text-align: center; width: 100%;' 
+                href="{% url 'register' %}"
+            >
+                Not yet registered? Create an account.
+            </a>
         </div>
-        <button type="submit" class='button-link w-full'>Login</button>
     </form>
-
-    {% if form.errors %}
-        <p style="color:red;">Invalid username or password.</p>
-    {% endif %}
 </div>
 
 {% endblock %}
