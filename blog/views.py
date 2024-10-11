@@ -1,22 +1,17 @@
-from django.shortcuts import render
-from django.views.generic import ListView, TemplateView
+from django.views.generic import ListView, TemplateView, DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from django.shortcuts import render, get_object_or_404
+from django.http import JsonResponse
+from django.urls import reverse
 
 from blog.models import BlogPost
 from .serializers.BlogRequestSerializer import *
 
-class BlogPostListView(ListView):
-    model = BlogPost
+class BlogPostListView(TemplateView):
     template_name = 'blogs/my_blogs.html'
-    context_object_name = 'my_posts'
-
-    def get_queryset(self):
-        return BlogPost.objects.filter(author=self.request.user, is_deleted=False)
-
 
 class BlogPostCreateView(TemplateView):
     template_name = 'blogs/create_blog_form.html'
@@ -30,9 +25,29 @@ class BlogPostEditView(TemplateView):
         post_id = self.kwargs.get('id')
         context['post'] = get_object_or_404(BlogPost, id=post_id)
         return context
-    
-    
+
+
+class BlogShowView(DetailView):
+    model = BlogPost
+    template_name = 'blogs/show.html'
+    context_object_name = 'post'
+    pk_url_kwarg = 'id'
+
+
 class BlogPostView(LoginRequiredMixin, APIView):
+    # api functions
+    def get(self, request):
+        blogs = BlogPost.objects.filter(author=request.user)
+        blog_list = [{
+            'id': blog.id,
+            'title': blog.title,
+            'content': blog.content,
+            'created_at': blog.created_at.strftime('%Y-%m-%d'),
+            'show_url': reverse('show_blog', args=[blog.id]),
+            'edit_url': reverse('edit_blog_form', args=[blog.id]) 
+        } for blog in blogs]
+
+        return JsonResponse(blog_list, safe=False)
 
     def post(self, request):
         request_serialized = BlogRequestSerializer(data=request.data)

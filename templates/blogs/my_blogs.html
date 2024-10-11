@@ -11,26 +11,43 @@
             <i class="fas fa-plus"></i> Create Blog
         </a>
     </div>
-    <div style='display: flex; flex-direction: column; align-items: center;'>
-        {% if my_posts %}
-            {% for post in my_posts %}
-            <div id="blog-{{ post.id }}" class='blog_instance w-full' style='display: flex; flex-direction: column; margin-bottom: 2rem;'>
-                <a href="{% url 'edit_blog_form' post.id %}"><h3 class='line-clamp' style='text-align: left;'>{{ post.title }}</h3></a>
-                <small>{{ post.created_at|date:"F j, Y" }}</small>
-                <p class='line-clamp'>{{ post.content|truncatewords:100 }}</p>
-                <div style='display: flex; justify-content: flex-end;'>
-                    <a type='button' class='button-link' style='margin-right: 1rem' href="{% url 'edit_blog_form' post.id %}"><i class="fas fa-edit"></i></a>
-                    <a type='button' class='danger-btn' onClick="deletePost({{ post.id }})"><i class="fas fa-trash"></i></a>
-                </div>
-            </div>
-            {% endfor %}
-        {% else %}
-            <p>You haven't created any blogs yet.</p>
-        {% endif %}
+    <div id="blog-list" style='display: flex; flex-direction: column; align-items: center;'>
+        <p>Loading blogs...</p>
     </div>
 </div>
 
 <script>
+    $(document).ready(function() {
+        $.ajax({
+            url: '/blogs/api/blog/all',
+            type: 'GET',
+            success: function(response) {
+                $('#blog-list').empty(); 
+                if (response.length > 0) {
+                    response.forEach(function(post) {
+                        $('#blog-list').append(`
+                            <div id="blog-${post.id}" class='blog_instance w-full' style='display: flex; flex-direction: column; margin-bottom: 2rem;'>
+                                <a href="${post.show_url}"><h3 class='line-clamp' style='text-align: left;'>${post.title}</h3></a>
+                                <small>${post.created_at}</small>
+                                <p class='line-clamp'>${post.content}</p>
+                                <div style='display: flex; justify-content: flex-end;'>
+                                    <a type='button' class='button-link' style='margin-right: 1rem' href="${post.edit_url}"><i class="fas fa-edit"></i></a>
+                                    <a type='button' class='danger-btn' onClick="deletePost(${post.id})"><i class="fas fa-trash"></i></a>
+                                </div>
+                            </div>
+                        `);
+                    });
+                } else {
+                    $('#blog-list').append('<p>You haven\'t created any blogs yet.</p>');
+                }
+            },
+            error: function(xhr) {
+                console.error('Error loading data:', xhr.responseText);
+                $('#blog-list').empty().append('<p>Error loading blogs. Please try again.</p>');
+            }
+        });
+    });
+
     function deletePost(id) {
         if (confirm('Are you sure you want to delete this blog post?')) {
             $.ajax({

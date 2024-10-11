@@ -19,7 +19,7 @@
     <div class="blog_grid">
         {% for post in posts %}
         <div class="blog_instance">
-            <a href=><h2>{{ post.title }}</h2></a>
+            <a href="{% url 'show_blog' post.id %}"><h2>{{ post.title }}</h2></a>
             <small>Date Published: {{ post.created_at|date:"F j, Y" }}</small>
             <small>Author: {{ post.author.username }}</small>
             <p class="blog-content line-clamp">
