@@ -1,4 +1,5 @@
 from django.views.generic import ListView, TemplateView, DetailView
+from rest_framework.throttling import UserRateThrottle
 from django.contrib.auth.mixins import LoginRequiredMixin
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -35,6 +36,7 @@ class BlogShowView(DetailView):
 
 
 class BlogPostView(LoginRequiredMixin, APIView):
+    throttle_classes = [UserRateThrottle]
     # api functions
     def get(self, request):
         blogs = BlogPost.objects.filter(author=request.user)
