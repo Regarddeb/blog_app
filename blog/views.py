@@ -8,7 +8,7 @@ from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse
 from django.urls import reverse
 
-from blog.models import BlogPost
+from blog.models import *
 from .serializers.BlogRequestSerializer import *
 
 class BlogPostListView(TemplateView):
@@ -39,17 +39,10 @@ class BlogPostView(LoginRequiredMixin, APIView):
     throttle_classes = [UserRateThrottle]
     # api functions
     def get(self, request):
-        blogs = BlogPost.objects.filter(author=request.user)
-        blog_list = [{
-            'id': blog.id,
-            'title': blog.title,
-            'content': blog.content,
-            'created_at': blog.created_at.strftime('%Y-%m-%d'),
-            'show_url': reverse('show_blog', args=[blog.id]),
-            'edit_url': reverse('edit_blog_form', args=[blog.id]) 
-        } for blog in blogs]
+        blogs = BlogPost.objects.filter(author=request.user, is_deleted=0)
+        blog_list = BlogPostSerializer(blogs, many=True).data
 
-        return JsonResponse(blog_list, safe=False)
+        return Response(blog_list, status=status.HTTP_200_OK)
 
     def post(self, request):
         request_serialized = BlogRequestSerializer(data=request.data)
